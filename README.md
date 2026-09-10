@@ -10,7 +10,23 @@ token-barrage retient ce flux. Le travail de manœuvre part chez un modèle work
 
 Pas de SaaS, pas de clé API. Ça tourne sur l'abonnement Claude Code que tu as déjà.
 
-![Licence: Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-0061FF) ![Installation: claude plugin](https://img.shields.io/badge/install-claude%20plugin-0061FF) ![Par L'Accélérateur IA](https://img.shields.io/badge/par-L'Acc%C3%A9l%C3%A9rateur%20IA-0F172A)
+![Licence: Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-0061FF) ![Installation: claude plugin](https://img.shields.io/badge/install-claude%20plugin-0061FF) ![Par L'Accélérateur IA](https://img.shields.io/badge/par-L'Acc%C3%A9l%C3%A9rateur%20IA-0F172A) ![Statut: bêta](https://img.shields.io/badge/statut-b%C3%AAta-F59E0B)
+
+> ### ⚠️ Bêta, publiée pour être testée
+>
+> Ce dépôt n'est pas un outil abouti, c'est une expérience documentée.
+>
+> L'économie de contexte est réelle et vérifiée : **87,9 % en moyenne**, 97 à 98 %
+> au-dessus du seuil, mesurés en tokens facturés. Mais en usage réel avec un modèle
+> frontier, **le plugin n'a pas payé sur la tâche testée** : Opus ne charge pas les
+> gros fichiers, il les interroge au `grep`, et le hook n'a alors rien à bloquer.
+>
+> Tout est écrit, chiffres et limites compris, dans **[TROUVAILLES.md](TROUVAILLES.md)** :
+> la méthode de mesure, les quatre bugs trouvés dans le plugin d'origine, et l'A/B
+> qui retourne la conclusion.
+>
+> Si tu le testes, le registre `.barrage/ledger.jsonl` enregistre le coût réel de
+> chaque délégation. Les retours sont bienvenus.
 
 ---
 

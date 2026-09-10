@@ -10,7 +10,23 @@ token-barrage is a Claude Code plugin that hands that work to a cheap worker mod
 
 No SaaS. No API key. It runs on the Claude Code subscription you already have.
 
-![Licence: Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-0061FF) ![Installation: claude plugin](https://img.shields.io/badge/install-claude%20plugin-0061FF) ![Par L'Accélérateur IA](https://img.shields.io/badge/par-L'Acc%C3%A9l%C3%A9rateur%20IA-0F172A)
+![Licence: Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-0061FF) ![Installation: claude plugin](https://img.shields.io/badge/install-claude%20plugin-0061FF) ![Par L'Accélérateur IA](https://img.shields.io/badge/par-L'Acc%C3%A9l%C3%A9rateur%20IA-0F172A) ![Statut: bêta](https://img.shields.io/badge/statut-b%C3%AAta-F59E0B)
+
+> ### ⚠️ Beta, published to be tested
+>
+> This is a documented experiment, not a finished tool.
+>
+> The context saving is real and verified: **87.9% on average**, 97-98% above the
+> threshold, measured in billed tokens. But in real use with a frontier model,
+> **the plugin did not pay off on the task we tested**: Opus never loads large
+> files, it probes them with `grep`, and the hook has nothing left to block.
+>
+> Everything is written up, numbers and limits included, in
+> **[TROUVAILLES.md](TROUVAILLES.md)** (in French): the measurement method, the four
+> bugs found in the original plugin, and the A/B test that reverses the conclusion.
+>
+> If you try it, `.barrage/ledger.jsonl` records the real cost of every delegation.
+> Feedback welcome.
 
 ---
 

@@ -134,6 +134,10 @@ Apache-2.0.
 
 ## Aller plus loin
 
+<p align="center">
+  <img src="assets/hero.png" alt="L’Accélérateur IA" width="640">
+</p>
+
 Si tu veux apprendre à utiliser Claude Code et en faire un revenu récurrent, jette un œil à **L'Accélérateur IA**.
 
 👉 **[Découvrir L'Accélérateur IA](https://laccelerateuria.com)**

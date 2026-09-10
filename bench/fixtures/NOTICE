@@ -1,0 +1,8 @@
+Ces fichiers proviennent de spotify/portal-ai-plugins
+(plugins/shunt/evals/fixtures), distribués sous licence Apache-2.0.
+
+Ils sont repris tels quels pour que le banc de mesure soit reproductible sans
+cloner le dépôt d'origine, et pour que la comparaison avec les chiffres publiés
+par Spotify porte sur exactement le même corpus.
+
+Source : https://github.com/spotify/portal-ai-plugins

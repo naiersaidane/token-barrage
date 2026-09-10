@@ -1,0 +1,40 @@
+{
+  "methode": "mesure différentielle, tokens réels facturés (pas chars/4)",
+  "worker": "claude-haiku-4-5",
+  "principal": "claude-opus-5 à $5/MTok en entrée",
+  "cache": "régime établi (chaud)",
+  "passes": 3,
+  "overhead_worker_tokens": 11406,
+  "seuil_lignes": 350,
+  "moyenne_globale_pct": 87.89522329859994,
+  "etendue_globale": {
+    "min": 83.91181228861933,
+    "max": 90.40428365258272
+  },
+  "par_scenario": [
+    {
+      "id": "multi-file-cross-read",
+      "n": 3,
+      "economie_moy_pct": 97.33549083063646,
+      "min_pct": 96.91909385113269,
+      "max_pct": 97.72168284789645,
+      "gain_net_moy_usd": 0.0683313
+    },
+    {
+      "id": "single-large-file",
+      "n": 3,
+      "economie_moy_pct": 98.18106655642828,
+      "min_pct": 97.85035138486978,
+      "max_pct": 98.42221303568968,
+      "gain_net_moy_usd": 0.06522823333333334
+    },
+    {
+      "id": "source-plus-test",
+      "n": 3,
+      "economie_moy_pct": 68.16911250873514,
+      "min_pct": 56.39412997903563,
+      "max_pct": 75.57651991614256,
+      "gain_net_moy_usd": -0.0023624333333333337
+    }
+  ]
+}

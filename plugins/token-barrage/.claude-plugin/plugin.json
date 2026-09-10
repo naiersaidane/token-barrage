@@ -1,0 +1,9 @@
+{
+  "name": "token-barrage",
+  "displayName": "Token Barrage",
+  "version": "0.1.0",
+  "description": "Délègue le travail d'I/O (lectures massives, code répétitif) à un modèle worker bon marché. Les hooks bloquent les grosses lectures et renvoient vers bulk-read/code-write. Portage libre du plugin shunt de Spotify, sans dépendance SaaS.",
+  "license": "Apache-2.0",
+  "keywords": ["token-optimization", "model-routing", "delegation"],
+  "skills": "./skills/"
+}

@@ -1,0 +1,12 @@
+token-barrage
+Copyright 2026 Naier Saidane
+
+Ce produit est un portage de "shunt", publié par Spotify AB dans
+spotify/portal-ai-plugins sous licence Apache-2.0.
+L'architecture en trois couches, le seuil de 350 lignes et les scénarios de
+mesure en proviennent.
+
+Les fichiers de bench/fixtures/ sont repris de ce même dépôt sous Apache-2.0.
+Voir bench/fixtures/NOTICE.
+
+https://github.com/spotify/portal-ai-plugins

@@ -1,0 +1,23 @@
+{
+  "description": "Reprise à l'identique des scénarios bulk-read de shunt (evals/benchmarks.json), sur leurs propres fixtures, pour comparaison à variables égales.",
+  "scenarios": [
+    {
+      "id": "single-large-file",
+      "label": "Fichier unique volumineux",
+      "question": "What are all the exported items and what do they do?",
+      "paths": ["websocket-handler.ts"]
+    },
+    {
+      "id": "multi-file-cross-read",
+      "label": "Lecture croisée multi-fichiers",
+      "question": "Which classes and interfaces are exported across these files, and how do they relate to each other?",
+      "paths": ["websocket-handler.ts", "user-service.ts", "order-service.test.ts"]
+    },
+    {
+      "id": "source-plus-test",
+      "label": "Source + test",
+      "question": "What methods does UserService have, and which ones would be covered if we wrote tests following the OrderService test pattern?",
+      "paths": ["user-service.ts", "order-service.test.ts"]
+    }
+  ]
+}

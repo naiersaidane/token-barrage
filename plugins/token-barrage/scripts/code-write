@@ -1,0 +1,49 @@
+#!/bin/bash
+# Délègue la génération de code répétitif au worker.
+# Usage : code-write --spec "écris les tests de UserService" --reference ref.test.ts --target out.test.ts
+
+. "$(cd "$(dirname "$0")" && pwd)/lib/worker.sh"
+
+spec=""
+reference=""
+target=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --spec)      spec="$2"; shift 2 ;;
+    --reference) reference="$2"; shift 2 ;;
+    --target)    target="$2"; shift 2 ;;
+    *)           shift ;;
+  esac
+done
+
+[ -z "$spec" ] && { echo "Erreur : --spec est requis" >&2; exit 1; }
+
+# Sans fichier de référence, le worker produirait du code hors-sol qui ne
+# colle à rien dans le projet.
+if [ -z "$reference" ]; then
+  echo "Erreur : --reference est requis — passe un fichier dont la sortie doit reprendre les conventions." >&2
+  echo "Pour enchaîner, référence le fichier que l'appel précédent vient de générer." >&2
+  exit 1
+fi
+[ -f "$reference" ] || { echo "Erreur : fichier de référence introuvable : $reference" >&2; exit 1; }
+
+barrage_preflight || exit 1
+barrage_tmpfile message_file || exit 1
+barrage_tmpfile answer_file  || exit 1
+
+printf 'Spec: %s\n\nReference:\n' "$spec" > "$message_file"
+cat "$reference" >> "$message_file"
+
+barrage_invoke "code-writer" "$message_file" > "$answer_file" || exit 1
+
+# Le modèle encadre parfois sa sortie malgré la consigne.
+clean=$(sed '/^```/d' "$answer_file")
+
+if [ -n "$target" ]; then
+  mkdir -p "$(dirname "$target")" 2>/dev/null
+  printf '%s\n' "$clean" > "$target"
+  echo "Écrit $(wc -l < "$target" | tr -d ' ') lignes dans $target" >&2
+else
+  printf '%s\n' "$clean"
+fi

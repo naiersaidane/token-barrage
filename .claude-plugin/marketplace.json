@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "token-barrage",
+  "version": "0.1.0",
+  "description": "Delegate I/O-heavy agent work to a cheap worker model. No SaaS, no API key.",
+  "owner": { "name": "Naier Saidane" },
+  "plugins": [
+    {
+      "name": "token-barrage",
+      "description": "Hooks block bulk file reads and redirect them to a cheap worker model. Ships an independent benchmark of the token savings.",
+      "version": "0.1.0",
+      "author": { "name": "Naier Saidane" },
+      "repository": "https://github.com/naiersaidane/token-barrage",
+      "source": "./plugins/token-barrage",
+      "category": "developer-tools"
+    }
+  ]
+}

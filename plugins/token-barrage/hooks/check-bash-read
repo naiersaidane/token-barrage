@@ -1,0 +1,59 @@
+#!/bin/bash
+# Bloque les commandes Bash qui aspirent un gros fichier dans le contexte
+# (cat/head/tail/less/more) et renvoie vers le skill bulk-reader.
+#
+# Corrige au passage le bug de parsing documenté chez Spotify : dans
+# `head -n 5 fichier`, leur boucle prend « 5 » pour le chemin.
+
+MIN_LINES="${BARRAGE_MIN_LINES:-350}"
+case "$MIN_LINES" in ''|*[!0-9]*) MIN_LINES=350 ;; esac
+
+pass() { exit 0; }
+
+deny() {
+  jq -nc --arg r "$1" '{
+    hookSpecificOutput: {
+      hookEventName: "PreToolUse",
+      permissionDecision: "deny",
+      permissionDecisionReason: $r
+    }
+  }'
+  exit 0
+}
+
+command -v jq >/dev/null 2>&1 || pass
+
+input=$(cat)
+command=$(printf '%s' "$input" | jq -r '.tool_input.command // empty')
+[ -z "$command" ] && pass
+
+# Un pipe est une lecture ciblée (cat f | grep), une redirection n'entre pas
+# dans le contexte (cat f > out) : les deux passent.
+printf '%s' "$command" | grep -qE '[|>]' && pass
+
+printf '%s' "$command" | grep -qE '^[[:space:]]*(cat|head|tail|less|more)[[:space:]]' || pass
+
+args=$(printf '%s' "$command" | sed -E 's/^[[:space:]]*(cat|head|tail|less|more)[[:space:]]+//')
+
+# Extraction du premier argument qui est un chemin, en sautant les drapeaux
+# ET leur valeur quand ils en prennent une (-n 5, -c 100, --lines=5).
+file_path=""
+skip_next=0
+for arg in $args; do
+  if [ "$skip_next" -eq 1 ]; then skip_next=0; continue; fi
+  case "$arg" in
+    -n|-c|-q|--lines|--bytes) skip_next=1; continue ;;
+    -*) continue ;;
+    *)  file_path=$(printf '%s' "$arg" | tr -d "\"'"); break ;;
+  esac
+done
+
+[ -z "$file_path" ] && pass
+[ -f "$file_path" ] || pass
+[ -r "$file_path" ] || pass
+
+lines=$(wc -l < "$file_path" 2>/dev/null | tr -d ' ')
+case "$lines" in ''|*[!0-9]*) pass ;; esac
+[ "$lines" -le "$MIN_LINES" ] && pass
+
+deny "Fichier de ${lines} lignes (seuil : ${MIN_LINES}). Utilise le skill bulk-reader pour déléguer cette lecture au modèle worker au lieu de cat/head/tail."

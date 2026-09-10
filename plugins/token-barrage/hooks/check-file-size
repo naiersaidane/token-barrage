@@ -1,0 +1,51 @@
+#!/bin/bash
+# Bloque les lectures intégrales de gros fichiers et renvoie vers le skill bulk-reader.
+#
+# Différences volontaires avec le hook `check-file-size` de Spotify :
+#   1. Le passage se fait par « exit 0 sans sortie », ce qui laisse le flux de
+#      permissions normal décider. Spotify émet {"decision":"allow"}, une valeur
+#      qui n'existe dans aucun schéma (le champ legacy attend approve|block) :
+#      Claude Code la rejette, et si elle passait elle court-circuiterait les
+#      permissions de l'utilisateur.
+#   2. Le blocage utilise hookSpecificOutput.permissionDecision, le format
+#      documenté, au lieu du champ top-level déprécié.
+#   3. offset:0 / limit:0 ne sont plus des contournements (bug documenté chez eux).
+
+MIN_LINES="${BARRAGE_MIN_LINES:-350}"
+case "$MIN_LINES" in ''|*[!0-9]*) MIN_LINES=350 ;; esac
+
+pass() { exit 0; }
+
+deny() {
+  jq -nc --arg r "$1" '{
+    hookSpecificOutput: {
+      hookEventName: "PreToolUse",
+      permissionDecision: "deny",
+      permissionDecisionReason: $r
+    }
+  }'
+  exit 0
+}
+
+command -v jq >/dev/null 2>&1 || pass
+
+input=$(cat)
+file_path=$(printf '%s' "$input" | jq -r '.tool_input.file_path // empty')
+offset=$(printf '%s' "$input" | jq -r '.tool_input.offset // 0')
+limit=$(printf '%s' "$input" | jq -r '.tool_input.limit // 0')
+
+# Lecture ciblée : Claude sait déjà ce qu'il veut. Un 0 n'est pas une cible.
+case "$offset" in ''|*[!0-9]*) offset=0 ;; esac
+case "$limit"  in ''|*[!0-9]*) limit=0  ;; esac
+[ "$offset" -gt 0 ] && pass
+[ "$limit"  -gt 0 ] && pass
+
+[ -z "$file_path" ] && pass
+[ -f "$file_path" ] || pass          # inexistant ou répertoire : laisser Read gérer l'erreur
+[ -r "$file_path" ] || pass
+
+lines=$(wc -l < "$file_path" 2>/dev/null | tr -d ' ')
+case "$lines" in ''|*[!0-9]*) pass ;; esac
+[ "$lines" -le "$MIN_LINES" ] && pass
+
+deny "Fichier de ${lines} lignes (seuil : ${MIN_LINES}). Utilise le skill bulk-reader pour déléguer cette lecture au modèle worker au lieu de la charger dans ton contexte. Si tu as besoin du contenu exact pour une édition, relis avec offset/limit sur la seule section utile."

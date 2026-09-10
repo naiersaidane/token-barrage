@@ -1,0 +1,42 @@
+{
+  "mesure": "differentielle",
+  "worker_model": "claude-haiku-4-5-20251001",
+  "overhead_worker_tokens": 11406,
+  "prix_principal_usd_par_mtok": 5,
+  "scenarios": [
+    {
+      "id": "single-large-file",
+      "label": "Fichier unique volumineux",
+      "lignes": 602,
+      "tokens_sans": 14514,
+      "tokens_avec": 188,
+      "economie_brute_pct": 98.7046989113959,
+      "economie_usd": 0.07163,
+      "cout_worker_usd": 0.0051501,
+      "gain_net_usd": 0.0664799
+    },
+    {
+      "id": "multi-file-cross-read",
+      "label": "Lecture croisée multi-fichiers",
+      "lignes": 692,
+      "tokens_sans": 15450,
+      "tokens_avec": 498,
+      "economie_brute_pct": 96.7766990291262,
+      "economie_usd": 0.07476,
+      "cout_worker_usd": 0.0415089,
+      "gain_net_usd": 0.03325109999999999
+    },
+    {
+      "id": "source-plus-test",
+      "label": "Source + test",
+      "lignes": 90,
+      "tokens_sans": 954,
+      "tokens_avec": 415,
+      "economie_brute_pct": 56.49895178197065,
+      "economie_usd": 0.002695,
+      "cout_worker_usd": 0.005969100000000001,
+      "gain_net_usd": -0.0032741000000000007
+    }
+  ],
+  "economie_brute_moyenne_pct": 83.99344990749758
+}
